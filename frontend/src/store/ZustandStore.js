@@ -19,6 +19,22 @@ const useZustandStore = create((set) => ({
       console.error(error);
     }
   },
+  updateTodo: async (id, todos, editedTodo) => {
+    try {
+      const res = axios.put(`http://localhost:3001/todos/${id}`, {
+        editedTodo,
+      });
+
+      // create new object if ID matches , if not return old
+      const updatedTodo = todos.map((todo) =>
+        todo._id === id ? { ...todo, ...res.data } : todo
+      );
+
+      set({ todo: updatedTodo });
+    } catch (error) {
+      console.error(error);
+    }
+  },
   toggleTodo: async (id, completed) => {
     try {
       await axios.put(

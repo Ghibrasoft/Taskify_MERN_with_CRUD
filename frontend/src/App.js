@@ -1,13 +1,18 @@
 import "./App.css";
 import TodoList from "./components/TodoList";
 import AddTodo from "./components/AddTodo";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
-    <div className="h-screen flex flex-col items-center">
-      <AddTodo />
-      <TodoList />
-    </div>
+    <>
+      <ToastContainer />
+      <div className="h-screen flex flex-col items-center">
+        <AddTodo />
+        <TodoList />
+      </div>
+    </>
   );
 }
 
