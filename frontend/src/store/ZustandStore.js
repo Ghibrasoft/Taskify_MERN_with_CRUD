@@ -21,7 +21,7 @@ const useZustandStore = create((set) => ({
   },
   updateTodo: async (id, todos, editedTodo) => {
     try {
-      const res = axios.put(`http://localhost:3001/todos/${id}`, {
+      const res = await axios.put(`http://localhost:3001/todos/${id}`, {
         editedTodo,
       });
 
@@ -35,25 +35,43 @@ const useZustandStore = create((set) => ({
       console.error(error);
     }
   },
-  toggleTodo: async (id, completed) => {
+  togglePending: async (id, pending) => {
     try {
       await axios.put(
-        `http://localhost:3001/todos/${id}/${completed ? "undo" : "done"}`
+        `http://localhost:3001/todos/${id}/${
+          pending ? "inprogress" : "pending"
+        }`
       );
 
       set((state) => ({
         todos: state.todos.map((todo) =>
-          todo._id === id ? { ...todo, completed: !completed } : todo
+          todo._id === id ? { ...todo, pending: !pending } : todo
         ),
       }));
     } catch (error) {
       console.error(error);
     }
   },
-  deleteTodo: async (id, todoList) => {
+  toggleDone: async (id, done) => {
     try {
-      await axios.delete(`http://localhost:3001/todos/${id}`);
-      const filteredTodos = todoList.filter((todo) => todo._id !== id);
+      await axios.put(
+        `http://localhost:3001/todos/${id}/${done ? "undo" : "done"}`
+      );
+
+      set((state) => ({
+        todos: state.todos.map((todo) =>
+          todo._id === id ? { ...todo, done: !done } : todo
+        ),
+      }));
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  deleteTodo: async (ids, todoList) => {
+    try {
+      await axios.delete("http://localhost:3001/todos", { data: { ids } });
+
+      const filteredTodos = todoList.filter((todo) => !ids.includes(todo._id));
       set({ todos: filteredTodos });
     } catch (error) {
       console.error(error);

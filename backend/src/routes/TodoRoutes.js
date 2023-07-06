@@ -50,20 +50,30 @@ router.put("/todos/:_id", async (req, res) => {
 // PUT toggle current todo (done/undone)
 router.put("/todos/:_id/:status", async (req, res) => {
   const { _id, status } = req.params;
-  let completed;
+  let pending;
+  let done;
 
-  if (status === "done") {
-    completed = true;
-  } else if (status === "undo") {
-    completed = false;
-  } else {
-    return res.status(400).json({ message: "Invalid status" });
+  switch (status) {
+    case "inprogress":
+      pending = false;
+      break;
+    case "pending":
+      pending = true;
+      break;
+    case "done":
+      done = true;
+      break;
+    case "undo":
+      done = false;
+      break;
+    default:
+      return res.status(400).json({ message: "Invalid status" });
   }
 
   try {
     const currTodo = await TodoModel.findByIdAndUpdate(
       _id,
-      { completed },
+      { pending, done },
       { new: true }
     );
     res.json(currTodo);
@@ -74,10 +84,10 @@ router.put("/todos/:_id/:status", async (req, res) => {
 });
 
 // DELETE todo
-router.delete("/todos/:_id", async (req, res) => {
-  const { _id } = req.params;
+router.delete("/todos", async (req, res) => {
+  const { ids } = req.body;
   try {
-    await TodoModel.deleteOne({ _id });
+    await TodoModel.deleteMany({ _id: { $in: ids } });
 
     res.json({ message: "Task deleted" });
   } catch (error) {

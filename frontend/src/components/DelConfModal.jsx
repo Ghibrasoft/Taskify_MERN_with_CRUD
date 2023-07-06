@@ -1,16 +1,60 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { toast } from "react-toastify";
 import useZustandStore from "../store/ZustandStore";
 
-export default function DelConfModal({ todoId, openModal, setOpenModal }) {
+export default function DelConfModal({
+  openModal,
+  setOpenModal,
+  checkedTodo,
+  setCheckedTodo,
+  setOpenMultiSelect,
+}) {
   const { todos, deleteTodo } = useZustandStore();
+
+  const handleDelete = useCallback(async () => {
+    try {
+      await deleteTodo(checkedTodo, todos);
+      setOpenModal(false);
+      setOpenMultiSelect(false);
+      setCheckedTodo([]);
+      toast.error("Task Deleted!");
+    } catch (error) {
+      console.error(error);
+    }
+  }, [
+    checkedTodo,
+    deleteTodo,
+    setCheckedTodo,
+    setOpenModal,
+    setOpenMultiSelect,
+    todos,
+  ]);
+
+  const handleDeleteMany = useCallback(async () => {
+    try {
+      await deleteTodo(checkedTodo, todos);
+      setOpenModal(false);
+      setOpenMultiSelect(false);
+      setCheckedTodo([]);
+      toast.error("Task list deleted!");
+    } catch (error) {
+      console.error(error);
+    }
+  }, [
+    checkedTodo,
+    deleteTodo,
+    setCheckedTodo,
+    setOpenModal,
+    setOpenMultiSelect,
+    todos,
+  ]);
 
   return (
     // backdrop
     <div
       onClick={() => setOpenModal(false)}
-      className={`flex justify-center items-center fixed inset-0 transition-colors z-10 ${
+      className={`flex justify-center items-center fixed inset-0 transition-colors z-20 ${
         openModal ? "visible bg-black/50" : "invisible"
       }`}
     >
@@ -32,11 +76,7 @@ export default function DelConfModal({ todoId, openModal, setOpenModal }) {
           {/* buttons */}
           <div className="flex gap-1 mt-5">
             <button
-              onClick={() => {
-                setOpenModal(false);
-                deleteTodo(todoId, todos);
-                toast.error("Task Deleted!");
-              }}
+              onClick={checkedTodo.length > 1 ? handleDeleteMany : handleDelete}
               className="bg-red-500 text-white rounded-xl px-5 py-2 hover:bg-red-700 transition-colors"
             >
               Delete

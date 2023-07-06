@@ -4,14 +4,17 @@ import DelConfModal from "./DelConfModal";
 import {
   AiOutlineCloseCircle,
   AiOutlineUndo,
-  AiOutlineFileDone,
+  AiOutlineCheckCircle,
+  AiOutlineRise,
 } from "react-icons/ai";
 import { toast } from "react-toastify";
 
-export default function DoneTodos({ searchWord }) {
-  const { toggleDone, todos } = useZustandStore();
-  const doneTodos = todos.filter((todo) => todo.done === true);
-  const doneTodosIds = doneTodos.map((todo) => todo._id);
+export default function InProgressTodos({ searchWord }) {
+  const { togglePending, toggleDone, todos } = useZustandStore();
+  const inProgressTodos = todos.filter(
+    (todo) => todo.pending === false && todo.done === false
+  );
+  const inProgressIds = inProgressTodos.map((todo) => todo._id);
 
   const [openMultiSelect, setOpenMultiSelect] = useState(false);
   const [checkedTodo, setCheckedTodo] = useState([]);
@@ -41,16 +44,16 @@ export default function DoneTodos({ searchWord }) {
   return (
     <>
       <div className="flex flex-col gap-5 pb-5 overflow-y-auto">
-        <div className="border-b-2 border-green-500 bg-white sticky top-0 flex justify-between z-10">
+        <div className="border-b-2 border-yellow-500 bg-white sticky top-0 flex justify-between z-10">
           <p className="flex items-center">
-            <span className="text-green-500">
-              <AiOutlineFileDone size={25} />
+            <span className="text-yellow-500">
+              <AiOutlineRise size={25} />
             </span>
-            Done ({doneTodos.length})
+            In progress ({inProgressTodos.length})
           </p>
 
           {/* multi select */}
-          {doneTodos.length > 1 && (
+          {inProgressTodos.length > 1 && (
             <div className="flex gap-1 mb-1">
               {openMultiSelect ? (
                 <>
@@ -80,7 +83,7 @@ export default function DoneTodos({ searchWord }) {
                   <button
                     type="button"
                     onClick={() => {
-                      setCheckedTodo(doneTodosIds);
+                      setCheckedTodo(inProgressIds);
                       setOpenMultiSelect(true);
                     }}
                     className="text-[10px] px-3 py-1 rounded-md bg-blue-500 text-white"
@@ -102,12 +105,12 @@ export default function DoneTodos({ searchWord }) {
 
         {/* displaying todos */}
         <ul className="flex flex-col gap-2">
-          {doneTodos
+          {inProgressTodos
             .filter(({ todo }) => todo.includes(searchWord))
-            .map(({ _id, todo, done, createdAt }) => (
+            .map(({ _id, todo, pending, done, createdAt }) => (
               <li
                 key={_id}
-                className="flex justify-between border rounded-lg p-3 bg-green-100 hover:bg-green-200 transition-colors group"
+                className="flex justify-between border rounded-lg p-3 bg-yellow-100 hover:bg-yellow-200 transition-colors group"
               >
                 {/* checkbox */}
                 {openMultiSelect && (
@@ -133,12 +136,25 @@ export default function DoneTodos({ searchWord }) {
                 </div>
                 {/* buttons */}
                 <div className="flex gap-2">
-                  {/* undo button */}
+                  {/* done button */}
                   <button
                     type="button"
                     onClick={() => {
                       toggleDone(_id, done);
-                      toast.warning("Task back to progress!");
+                      toast.success("Task done!");
+                    }}
+                    className="text-gray-500 hover:text-green-500 transition-colors"
+                  >
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <AiOutlineCheckCircle size={25} />
+                    </span>
+                  </button>
+                  {/* undo button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      togglePending(_id, pending);
+                      toast.info("Task back to pending!");
                     }}
                     className="text-gray-500 hover:text-yellow-500 transition-colors"
                   >
