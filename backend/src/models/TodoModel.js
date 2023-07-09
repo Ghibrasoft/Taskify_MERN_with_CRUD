@@ -6,6 +6,11 @@ const TodoSchema = new mongoose.Schema({
   done: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
+  userOwner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
+    required: true,
+  },
 });
 
 export const TodoModel = mongoose.model("todos", TodoSchema);

@@ -2,17 +2,20 @@ import React, { useRef, useState } from "react";
 import useZustandStore from "../store/ZustandStore";
 import { toast } from "react-toastify";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { useCookies } from "react-cookie";
 
 export default function AddTodo() {
   const inputRef = useRef(null);
   const [todo, setTodo] = useState("");
+  const [cookies, _] = useCookies(["access_token"]);
   const { addTodo } = useZustandStore();
 
   async function submitHandler(e) {
     e.preventDefault();
+    const userID = window.localStorage.getItem("userID");
     try {
       if (todo.trim() !== "") {
-        addTodo(todo);
+        addTodo(todo, userID, cookies);
         toast.success("Task added successfully!");
       } else {
         toast.warn("Empty task not allowed!");

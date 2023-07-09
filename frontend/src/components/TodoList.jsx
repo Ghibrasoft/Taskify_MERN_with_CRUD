@@ -4,14 +4,16 @@ import useZustandStore from "../store/ZustandStore";
 import InProgressTodos from "./InProgressTodos";
 import DoneTodos from "./DoneTodos";
 import SearchBar from "./SearchBar";
+import { useCookies } from "react-cookie";
 
 export default function TodoList() {
   const { getTodos } = useZustandStore();
+  const [cookies, setCookies] = useCookies(["access_token"]);
   const [searchWord, setSearchWord] = useState("");
 
   useEffect(() => {
-    getTodos();
-  }, [getTodos]);
+    getTodos(window.localStorage.getItem("userID"), cookies, setCookies);
+  }, [getTodos, cookies, setCookies]);
 
   return (
     <>

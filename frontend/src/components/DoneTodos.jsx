@@ -103,7 +103,7 @@ export default function DoneTodos({ searchWord }) {
         {/* displaying todos */}
         <ul className="flex flex-col gap-2">
           {doneTodos
-            .filter(({ todo }) => todo.includes(searchWord))
+            .filter(({ todo }) => todo.toLocaleLowerCase().includes(searchWord))
             .map(({ _id, todo, done, createdAt }) => (
               <li
                 key={_id}

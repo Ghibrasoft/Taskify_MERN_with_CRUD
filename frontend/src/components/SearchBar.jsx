@@ -5,7 +5,7 @@ export default function SearchBar({ setSearchWord }) {
   const { todos } = useZustandStore();
   const inputRef = useRef(null);
   const includes = todos.some(({ todo }) =>
-    todo.includes(inputRef.current?.value)
+    todo.toLocaleLowerCase().includes(inputRef.current?.value)
   );
 
   return (

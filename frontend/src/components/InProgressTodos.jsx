@@ -106,7 +106,7 @@ export default function InProgressTodos({ searchWord }) {
         {/* displaying todos */}
         <ul className="flex flex-col gap-2">
           {inProgressTodos
-            .filter(({ todo }) => todo.includes(searchWord))
+            .filter(({ todo }) => todo.toLocaleLowerCase().includes(searchWord))
             .map(({ _id, todo, pending, done, createdAt }) => (
               <li
                 key={_id}

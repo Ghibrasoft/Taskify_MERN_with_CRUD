@@ -9,9 +9,11 @@ import {
 } from "react-icons/ai";
 import DelConfModal from "./DelConfModal";
 import { toast } from "react-toastify";
+import { useCookies } from "react-cookie";
 
 export default function PendingTodos({ searchWord }) {
   const { togglePending, todos, updateTodo, getTodos } = useZustandStore();
+  const [cookies, setCookies] = useCookies(["access_token"]);
   const pendingTodos = todos.filter((todo) => todo.pending === true);
   const pendingIds = pendingTodos.map((todo) => todo._id);
 
@@ -35,7 +37,11 @@ export default function PendingTodos({ searchWord }) {
       if (editedTodo) {
         updateTodo(id, todos, editedTodo)
           .then(() => {
-            getTodos();
+            getTodos(
+              window.localStorage.getItem("userID"),
+              cookies,
+              setCookies
+            );
             toast.success("Task updated!");
           })
           .catch((error) => {
@@ -129,7 +135,7 @@ export default function PendingTodos({ searchWord }) {
         {/* displaying todos */}
         <ul className="flex flex-col gap-2">
           {pendingTodos
-            .filter(({ todo }) => todo.includes(searchWord))
+            .filter(({ todo }) => todo.toLocaleLowerCase().includes(searchWord))
             .map(({ _id, todo, pending, createdAt }) => (
               <li
                 key={_id}

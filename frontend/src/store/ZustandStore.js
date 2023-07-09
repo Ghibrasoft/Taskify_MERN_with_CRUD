@@ -2,19 +2,60 @@ import axios from "axios";
 import { create } from "zustand";
 
 const useZustandStore = create((set) => ({
-  todos: [],
-  addTodo: async (todo) => {
+  // register/login
+  currUser: {
+    username: "",
+  },
+  getCurrUser: async () => {},
+  registerUser: async (newUser) => {
     try {
-      await axios.post("http://localhost:3001/todos", { todo });
-      useZustandStore.getState().getTodos();
+      const { username, password } = newUser;
+      const res = await axios.post("http://localhost:3001/auth/register", {
+        username,
+        password,
+      });
+      return res;
     } catch (error) {
       console.error(error);
     }
   },
-  getTodos: async () => {
+  loginUser: async (loginUser) => {
     try {
-      const res = await axios.get("http://localhost:3001/todos");
+      const { username, password } = loginUser;
+      const res = await axios.post("http://localhost:3001/auth/login", {
+        username,
+        password,
+      });
+      return res;
+    } catch (error) {
+      console.error(error);
+      set({ authenticated: false });
+    }
+  },
+
+  // tasks
+  todos: [],
+  getTodos: async (userOwner, cookies, setCookies) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:3001/todos?userOwner=${userOwner}`,
+        { headers: { Authorization: cookies.access_token } }
+      );
       set({ todos: res.data });
+    } catch (error) {
+      if (error.response.status === 403) {
+        window.localStorage.removeItem("userID");
+        setCookies("access_token", "");
+        window.location.href = "/login";
+      } else {
+        console.error(error);
+      }
+    }
+  },
+  addTodo: async (todo, userOwner, cookies) => {
+    try {
+      await axios.post("http://localhost:3001/todos", { todo, userOwner });
+      useZustandStore.getState().getTodos(userOwner, cookies);
     } catch (error) {
       console.error(error);
     }

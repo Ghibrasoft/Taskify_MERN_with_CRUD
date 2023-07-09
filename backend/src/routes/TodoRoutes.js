@@ -1,34 +1,48 @@
 import express from "express";
 import { TodoModel } from "../models/TodoModel.js";
+import { verifyToken } from "../middleware/VerifyToken.js";
+import { UserModel } from "../models/UserModel.js";
 
 const router = express.Router();
 
-// GET all todos
-router.get("/todos", async (req, res) => {
+// GET user's todos
+router.get("/todos", verifyToken, async (req, res) => {
+  const { userOwner } = req.query;
   try {
-    const todos = await TodoModel.find({}).sort({ createdAt: -1 });
+    const todos = await TodoModel.find({ userOwner }).sort({ createdAt: -1 });
     res.json(todos);
   } catch (error) {
+    res.json(error);
     console.error(error);
-    res.status(500).json({ error: "Server error (GET)" });
   }
 });
 
-// POST todo
+// POST user's todos
 router.post("/todos", async (req, res) => {
-  const { todo } = req.body;
+  const { userOwner, todo } = req.body;
+
   try {
+    // finding user who created todo by ID
+    if (!userOwner) res.status(400).json({ error: "Missing userOwner value" });
+    const user = await UserModel.findById(userOwner);
+
+    // creating and saving new todo
     const newTodo = new TodoModel({
       todo,
+      userOwner,
     });
-
     const savedTodo = await newTodo.save();
-    res.status(201).json(savedTodo);
+
+    user.userTodos.push(savedTodo);
+    await user.save();
+
+    res.json({ userTodos: user.userTodos });
   } catch (error) {
+    res.json(error);
     console.error(error);
-    res.status(500).json({ error: "Server error (POST)" });
   }
 });
+
 // PUT curr todo
 router.put("/todos/:_id", async (req, res) => {
   const { _id } = req.params;
@@ -88,6 +102,10 @@ router.delete("/todos", async (req, res) => {
   const { ids } = req.body;
   try {
     await TodoModel.deleteMany({ _id: { $in: ids } });
+    await UserModel.updateMany(
+      { userTodos: { $in: ids } },
+      { $pull: { userTodos: { $in: ids } } }
+    );
 
     res.json({ message: "Task deleted" });
   } catch (error) {
