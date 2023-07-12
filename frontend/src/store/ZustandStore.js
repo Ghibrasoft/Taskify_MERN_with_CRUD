@@ -3,10 +3,17 @@ import { create } from "zustand";
 
 const useZustandStore = create((set) => ({
   // register/login
-  currUser: {
-    username: "",
+  currUser: {},
+  getCurrUser: async (cookies) => {
+    try {
+      const res = await axios.get("http://localhost:3001/auth/user", {
+        headers: { Authorization: cookies.access_token },
+      });
+      set({ currUser: res.data });
+    } catch (error) {
+      console.error(error);
+    }
   },
-  getCurrUser: async () => {},
   registerUser: async (newUser) => {
     try {
       const { username, password } = newUser;
@@ -29,7 +36,26 @@ const useZustandStore = create((set) => ({
       return res;
     } catch (error) {
       console.error(error);
-      set({ authenticated: false });
+    }
+  },
+  changePassword: async (credentials) => {
+    const { oldPass, newPass, userID } = credentials;
+    try {
+      const res = await axios.put("http://localhost:3001/auth/changepassword", {
+        oldPass,
+        newPass,
+        userID,
+      });
+      return res;
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  deleteUserAccount: async (userId) => {
+    try {
+      await axios.delete(`http://localhost:3001/auth/${userId}`);
+    } catch (error) {
+      console.error(error);
     }
   },
 

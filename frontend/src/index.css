@@ -37,3 +37,10 @@ body {
 .title-h1 {
   font-family: "Kaushan Script", sans-serif;
 }
+
+.home-page {
+  background-image: url("../public//images//homewall.jpg");
+  /* background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat; */
+}

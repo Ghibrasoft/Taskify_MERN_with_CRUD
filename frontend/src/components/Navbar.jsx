@@ -23,24 +23,34 @@ export default function Navbar({ lightMode, setLightMode }) {
       <div>Navbar</div>
 
       {/* navigation tabs */}
-      <div className="flex gap-5 mr-10">
-        {!cookies.access_token ? (
+      <div className="h-full flex items-center mr-10">
+        {cookies.access_token && (
           <>
-            <Link to={"/"}>Home</Link>
-            <Link to={"/login"}>Log in</Link>
-          </>
-        ) : (
-          <>
-            <Link to={"/mainpage"}>Main page</Link>
-            <Link to={"/profile"}>Profile</Link>
-            <button onClick={handleLogout}>Log out</button>
+            <Link
+              to={"/mainpage"}
+              className="h-full flex items-center hover:bg-blue-500 px-7 hover:text-white transition-colors"
+            >
+              Main page
+            </Link>
+            <Link
+              to={"/profile"}
+              className="h-full flex items-center hover:bg-blue-500 px-7 hover:text-white transition-colors"
+            >
+              Profile
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="h-full flex items-center hover:bg-blue-500 px-7 hover:text-white transition-colors"
+            >
+              Log out
+            </button>
           </>
         )}
         {/* light/night mode */}
-        <div className="flex items-center">
+        <div className="h-full flex items-center">
           <button
             onClick={() => setLightMode((prevState) => !prevState)}
-            className=""
+            className="h-full px-5 hover:bg-blue-500 hover:text-white transition-colors"
           >
             {lightMode ? (
               <MdOutlineLightMode size={25} />

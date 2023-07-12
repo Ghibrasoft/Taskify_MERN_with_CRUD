@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { UserModel } from "../models/UserModel.js";
+import { verifyToken } from "../middleware/VerifyToken.js";
+import { TodoModel } from "../models/TodoModel.js";
 
 dotenv.config();
 const router = express.Router();
@@ -58,6 +60,80 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// GET current user
+router.get("/user", verifyToken, async (req, res) => {
+  const token = req.headers.authorization;
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const currUser = await UserModel.findById(decodedToken.id);
+
+    res.json(currUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// PUT change user password
+router.put("/changepassword", async (req, res) => {
+  const { oldPass, newPass, userID } = req.body;
+  try {
+    // find current user
+    const currUser = await UserModel.findById(userID);
+    if (currUser) {
+      const isPasswordNew = await bcrypt.compare(oldPass, currUser.password);
+
+      // if password is different
+      if (isPasswordNew) {
+        const newHashedPassword = await bcrypt.hash(newPass, 10);
+
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          userID,
+          { password: newHashedPassword },
+          { new: true }
+        );
+
+        // generate new jwt
+        const newToken = jwt.sign({ id: userID }, process.env.JWT_SECRET, {
+          expiresIn: "1h",
+        });
+
+        res.json({ newToken, updatedUser });
+      } else {
+        res.status(401).json({ message: "Invalid old password!" });
+      }
+    } else {
+      res.status(404).json({ message: "User not found!" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error!" });
+  }
+});
+
+// DELETE curr user account
+router.delete("/:userId", async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    // finding current user
+    const currUser = await UserModel.findById(userId);
+    if (!currUser) return res.status(404).json({ message: "User not found!" });
+    const { userTodos } = currUser;
+
+    // deleting todos and user
+    await TodoModel.deleteMany({ _id: { $in: userTodos } });
+    const deletedUser = await UserModel.findByIdAndDelete(userId);
+    if (!deletedUser)
+      return res.status(404).json({ message: "User not found!" });
+
+    res.json({ message: "User and associated todos deleted successfully!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error!" });
   }
 });
 
