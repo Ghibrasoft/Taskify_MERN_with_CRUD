@@ -6,7 +6,7 @@ import useZustandStore from "../store/ZustandStore";
 export default function Layout({ children }) {
   const { lightMode, setLightMode } = useZustandStore();
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col text-xs sm:text-base">
       <header
         className={`h-14 shadow-lg fixed w-full z-20 ${
           lightMode ? "bg-slate-800 text-white" : "bg-white"

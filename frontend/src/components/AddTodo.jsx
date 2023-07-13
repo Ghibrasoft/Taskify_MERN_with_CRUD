@@ -26,7 +26,7 @@ export default function AddTodo() {
     }
   }
   return (
-    <div className="flex flex-col items-center w-full mt-20">
+    <div className="flex flex-col items-center w-full">
       <h1
         className={`title-h1 text-center mb-5 text-5xl sm:text-7xl w-full ${
           !lightMode && "title-h1 text-white"

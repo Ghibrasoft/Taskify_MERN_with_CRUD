@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -10,14 +10,11 @@ import {
   MdAccountBox,
   MdLogout,
 } from "react-icons/md";
-import useZustandStore from "../store/ZustandStore";
 
 export default function Navbar({ lightMode, setLightMode }) {
   const navigate = useNavigate();
   const [openNav, setOpenNav] = useState(false);
   const [cookies, setCookies] = useCookies(["access_token"]);
-  const { currUser, getCurrUser } = useZustandStore();
-  const { username } = currUser;
 
   function handleLogout() {
     setCookies("access_token", "");
@@ -26,24 +23,22 @@ export default function Navbar({ lightMode, setLightMode }) {
     navigate("/");
   }
 
-  useEffect(() => {
-    getCurrUser(cookies);
-  }, [getCurrUser, cookies]);
-
   return (
     <nav className="h-full flex justify-between items-center">
       <div className="">
         <img src="" alt="" />
-        {cookies && username}
       </div>
 
       {/* navigation tabs */}
-      <div className="h-full hidden sm:flex items-center mr-10">
+      <div className="h-full hidden sm:flex items-cente ms-auto">
         {cookies.access_token && (
           <>
             <Link
               to={"/mainpage"}
-              className="h-full flex items-center hover:bg-blue-500 px-7 hover:text-white transition-colors"
+              className={`h-full flex items-center hover:bg-blue-500 px-7 hover:text-white transition-colors ${
+                window.location.pathname === "/mainpage" &&
+                "bg-blue-500 text-white"
+              }`}
             >
               <span className="mr-1">
                 <MdHome size={25} />
@@ -52,7 +47,10 @@ export default function Navbar({ lightMode, setLightMode }) {
             </Link>
             <Link
               to={"/profile"}
-              className="h-full flex items-center hover:bg-blue-500 px-7 hover:text-white transition-colors"
+              className={`h-full flex items-center hover:bg-blue-500 px-7 hover:text-white transition-colors ${
+                window.location.pathname === "/profile" &&
+                "bg-blue-500 text-white"
+              }`}
             >
               <span className="mr-1">
                 <MdAccountBox size={25} />
@@ -70,28 +68,31 @@ export default function Navbar({ lightMode, setLightMode }) {
             </button>
           </>
         )}
-        {/* light/night mode */}
-        <div className="h-full flex items-center">
-          <button
-            onClick={() => setLightMode((prevState) => !prevState)}
-            className="h-full px-5 hover:bg-blue-500 hover:text-white transition-colors"
-          >
-            {lightMode ? (
-              <MdOutlineLightMode size={25} />
-            ) : (
-              <MdOutlineModeNight size={25} />
-            )}
-          </button>
-        </div>
+      </div>
+
+      {/* light/night mode */}
+      <div className="h-full flex items-center me-auto sm:m-0">
+        <button
+          onClick={() => setLightMode((prevState) => !prevState)}
+          className="h-full px-5 hover:bg-blue-500 hover:text-white transition-colors"
+        >
+          {lightMode ? (
+            <MdOutlineLightMode size={25} />
+          ) : (
+            <MdOutlineModeNight size={25} />
+          )}
+        </button>
       </div>
 
       {/* hamburger menu */}
-      <div
-        onClick={() => setOpenNav((prevState) => !prevState)}
-        className="sm:hidden z-10"
-      >
-        {openNav ? <MdClose size={35} /> : <MdMenu size={35} />}
-      </div>
+      {cookies.access_token && (
+        <div
+          onClick={() => setOpenNav((prevState) => !prevState)}
+          className="sm:hidden z-10"
+        >
+          {openNav ? <MdClose size={35} /> : <MdMenu size={35} />}
+        </div>
+      )}
 
       {/* mobile version */}
       <div

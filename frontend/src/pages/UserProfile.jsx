@@ -16,12 +16,12 @@ import icon from "../assets/avatar.jpeg";
 
 export default function UserProfile() {
   const inputFileRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [accountDelModal, setAccountDelModal] = useState(false);
   const [showChangePass, setShowChangePass] = useState(false);
   const [cookies, _] = useCookies(["access_token"]);
   const { currUser, getCurrUser, lightMode } = useZustandStore();
-  const { username, email, userTodos } = currUser;
-  const avatar = false;
+  const { avatar, username, email, userTodos } = currUser;
 
   // custom input (file) func
   function handleFileInput() {
@@ -43,7 +43,7 @@ export default function UserProfile() {
             <div className="flex justify-center">
               <div className="relative w-fit">
                 <img
-                  src={`${avatar ? "" : `${icon}`}`}
+                  src={`${avatar ? `${avatar}` : `${icon}`}`}
                   alt="avatar"
                   className="w-32 h-32 rounded-lg"
                 />

@@ -42,7 +42,7 @@ export default function DoneTodos({ searchWord }) {
     <>
       <div className="flex flex-col gap-5 pb-5 overflow-y-auto">
         <div
-          className={`border-b-2 border-green-500 bg-white sticky top-0 flex justify-between z-10 ${
+          className={`border-b-2 border-green-500 sticky top-0 flex justify-between z-10 ${
             !lightMode && "bg-inherit text-white"
           }`}
         >
@@ -62,7 +62,7 @@ export default function DoneTodos({ searchWord }) {
                     type="button"
                     disabled={disableBtn}
                     onClick={() => setOpenModal(true)}
-                    className={`text-[10px] px-3 py-1 rounded-md text-white ${
+                    className={`text-[10px] px-3 rounded-md text-white ${
                       disableBtn ? "bg-gray-300" : "bg-red-500"
                     }`}
                   >
@@ -74,7 +74,7 @@ export default function DoneTodos({ searchWord }) {
                       setOpenMultiSelect(false);
                       setCheckedTodo([]);
                     }}
-                    className="text-[10px] px-3 py-1 rounded-md bg-gray-500 text-white"
+                    className="text-[10px] px-3 rounded-md bg-gray-500 text-white"
                   >
                     Close
                   </button>
@@ -87,14 +87,14 @@ export default function DoneTodos({ searchWord }) {
                       setCheckedTodo(doneTodosIds);
                       setOpenMultiSelect(true);
                     }}
-                    className="text-[10px] px-3 py-1 rounded-md bg-blue-500 text-white"
+                    className="text-[10px] px-3 rounded-md bg-blue-500 text-white"
                   >
                     Select all
                   </button>
                   <button
                     type="button"
                     onClick={() => setOpenMultiSelect(true)}
-                    className="text-[10px] px-3 py-1 rounded-md bg-blue-500 text-white"
+                    className="text-[10px] px-3 rounded-md bg-blue-500 text-white"
                   >
                     Select many
                   </button>
@@ -105,7 +105,7 @@ export default function DoneTodos({ searchWord }) {
         </div>
 
         {/* displaying todos */}
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-2 overflow-y-auto max-h-[400px]">
           {doneTodos
             .filter(({ todo }) => todo.toLocaleLowerCase().includes(searchWord))
             .map(({ _id, todo, done, createdAt }) => (
