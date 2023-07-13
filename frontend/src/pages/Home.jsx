@@ -4,8 +4,8 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 
 export default function Home() {
   return (
-    <div className="home-page h-full flex justify-center items-center bg-center bg-cover bg-no-repeat">
-      <div className="w-[500px] h-[250px] flex flex-col items-center gap-3">
+    <div className="home-page bg-center bg-cover bg-no-repeat h-full flex justify-center items-center">
+      <div className="sm:p-20 p-10 flex flex-col items-center gap-3">
         <h1 className="text-3xl sm:text-7xl font-bold">Welcome</h1>
         <p className="text-2xl">Manage your own tasks</p>
         <Link

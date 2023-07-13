@@ -8,7 +8,7 @@ export default function AddTodo() {
   const inputRef = useRef(null);
   const [todo, setTodo] = useState("");
   const [cookies, _] = useCookies(["access_token"]);
-  const { addTodo } = useZustandStore();
+  const { addTodo, lightMode } = useZustandStore();
 
   async function submitHandler(e) {
     e.preventDefault();
@@ -26,8 +26,12 @@ export default function AddTodo() {
     }
   }
   return (
-    <div className="flex flex-col items-center w-full mt-5 sm:mt-20">
-      <h1 className="title-h1 text-center mb-5 text-5xl sm:text-7xl w-full">
+    <div className="flex flex-col items-center w-full mt-20">
+      <h1
+        className={`title-h1 text-center mb-5 text-5xl sm:text-7xl w-full ${
+          !lightMode && "title-h1 text-white"
+        }`}
+      >
         Taskify
       </h1>
       <form onSubmit={submitHandler} className="md:w-2/5">

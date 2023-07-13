@@ -11,11 +11,13 @@ const router = express.Router();
 
 // register
 router.post("/register", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
 
   try {
     // checking if the user exists and return response
-    const user = await UserModel.findOne({ username });
+    const user = await UserModel.findOne({
+      $or: [{ username }, { email }],
+    });
     if (user) return res.status(409).json({ message: "User already exists!" });
 
     // hashing password
@@ -24,6 +26,7 @@ router.post("/register", async (req, res) => {
     // creating new user
     const newUser = new UserModel({
       username,
+      email,
       password: hashedPassword,
     });
     await newUser.save();
@@ -41,15 +44,15 @@ router.post("/login", async (req, res) => {
 
   try {
     // checking if the user exists and return response
-    const user = await UserModel.findOne({ username });
-    if (!user) return res.status(404).json({ message: "User doesn't exist!" });
+    const user = await UserModel.findOne({
+      $or: [{ username }, { email: username }],
+    });
+    if (!user) return res.status(404).json({ message: "User doesn't exists!" });
 
     // checking password matching
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid)
-      return res
-        .status(401)
-        .json({ message: "Incorrect Username or Password" });
+      return res.status(401).json({ message: "Incorrect password" });
 
     // generate jwt
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {

@@ -3,9 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import useZustandStore from "../store/ZustandStore";
 import { useCookies } from "react-cookie";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { toast } from "react-toastify";
 
 export default function Login() {
-  const { loginUser } = useZustandStore();
+  const { loginUser, lightMode } = useZustandStore();
   const [showPassword, setShowPassword] = useState(false);
   const [_, setCookies] = useCookies(["access_token"]);
   const navigate = useNavigate();
@@ -26,16 +27,30 @@ export default function Login() {
 
       if (res.status === 200) navigate("/mainpage");
 
-      console.log("Login success!");
+      // console.log("Login success!");
     } catch (error) {
-      console.error("Login failed", error);
+      // console.error("Login failed", error);
+
+      if (error.response && error.response.status === 404) {
+        toast.error("User doesn't exists!");
+      } else if (error.response && error.response.status === 401) {
+        toast.error("Incorrect password");
+      } else {
+        toast.error("Registration failed due to an internal server error");
+      }
     }
   }
 
   return (
     <div className="flex justify-center items-center h-full w-full">
-      <div className="flex flex-col w-4/5 sm:w-[400px] gap-5 border rounded-lg px-10 py-20 ">
-        <h1 className="text-center">Log in</h1>
+      <div className="flex flex-col w-4/5 sm:w-[400px] gap-5 border rounded-lg px-10 py-20 shadow-lg">
+        <h1
+          className={`text-center text-2xl font-bold py-1 mb-5 border-b border-blue-500 ${
+            !lightMode && "text-white"
+          }`}
+        >
+          Log in
+        </h1>
         <form
           ref={loginFormRef}
           onSubmit={handleLogin}
@@ -44,7 +59,8 @@ export default function Login() {
           <input
             type="text"
             name="username"
-            placeholder="Username..."
+            placeholder="Username or Email..."
+            required
             className="px-4 py-2 rounded-md shadow outline-none"
           />
           <div className="w-full flex items-center relative">
@@ -52,6 +68,7 @@ export default function Login() {
               type={`${showPassword ? "text" : "password"}`}
               name="password"
               placeholder="Password..."
+              required
               className="w-full px-4 py-2 rounded-md shadow outline-none"
             />
             <span
@@ -67,15 +84,17 @@ export default function Login() {
           </div>
           <button
             type="submit"
-            className="border px-4 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-700 transition-colors"
+            className="py-2 rounded-md text-white ring-2 ring-blue-500 hover:ring-offset-2 hover:ring-blue-700 active:ring-offset-1 bg-blue-500 hover:bg-blue-700 transition-all"
           >
             Log in
           </button>
         </form>
 
-        <div className="">
-          <span>Not have an account?</span>
-          <Link to={"/register"} className="ml-1 text-blue-500 hover:underline">
+        <div className="flex items-center gap-1">
+          <span className={`${!lightMode && "text-white"}`}>
+            Not have an account?
+          </span>
+          <Link to={"/register"} className="text-blue-500 hover:underline">
             Register
           </Link>
         </div>

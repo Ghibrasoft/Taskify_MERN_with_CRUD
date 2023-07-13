@@ -10,7 +10,7 @@ import {
 import { toast } from "react-toastify";
 
 export default function InProgressTodos({ searchWord }) {
-  const { togglePending, toggleDone, todos } = useZustandStore();
+  const { togglePending, toggleDone, todos, lightMode } = useZustandStore();
   const inProgressTodos = todos.filter(
     (todo) => todo.pending === false && todo.done === false
   );
@@ -44,7 +44,11 @@ export default function InProgressTodos({ searchWord }) {
   return (
     <>
       <div className="flex flex-col gap-5 pb-5 overflow-y-auto">
-        <div className="border-b-2 border-yellow-500 bg-white sticky top-0 flex justify-between z-10">
+        <div
+          className={`border-b-2 border-yellow-500 bg-white sticky top-0 flex justify-between z-10 ${
+            !lightMode && "bg-inherit text-white"
+          }`}
+        >
           <p className="flex items-center">
             <span className="text-yellow-500">
               <AiOutlineRise size={25} />

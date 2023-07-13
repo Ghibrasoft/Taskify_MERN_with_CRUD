@@ -2,6 +2,17 @@ import axios from "axios";
 import { create } from "zustand";
 
 const useZustandStore = create((set) => ({
+  lightMode: JSON.parse(window.localStorage.getItem("lightMode")),
+  setLightMode: () => {
+    set((prevState) => {
+      const mode = !prevState.lightMode;
+      localStorage.setItem("lightMode", JSON.stringify(mode));
+      return {
+        lightMode: JSON.parse(window.localStorage.getItem("lightMode")),
+      };
+    });
+  },
+
   // register/login
   currUser: {},
   getCurrUser: async (cookies) => {
@@ -16,14 +27,17 @@ const useZustandStore = create((set) => ({
   },
   registerUser: async (newUser) => {
     try {
-      const { username, password } = newUser;
+      const { username, email, password } = newUser;
       const res = await axios.post("http://localhost:3001/auth/register", {
         username,
+        email,
         password,
       });
+
       return res;
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+      throw error; // re-throw the error
     }
   },
   loginUser: async (loginUser) => {
@@ -35,7 +49,8 @@ const useZustandStore = create((set) => ({
       });
       return res;
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+      throw error; // re-throw the error
     }
   },
   changePassword: async (credentials) => {

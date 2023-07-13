@@ -9,7 +9,7 @@ import {
 import { toast } from "react-toastify";
 
 export default function DoneTodos({ searchWord }) {
-  const { toggleDone, todos } = useZustandStore();
+  const { toggleDone, todos, lightMode } = useZustandStore();
   const doneTodos = todos.filter((todo) => todo.done === true);
   const doneTodosIds = doneTodos.map((todo) => todo._id);
 
@@ -41,7 +41,11 @@ export default function DoneTodos({ searchWord }) {
   return (
     <>
       <div className="flex flex-col gap-5 pb-5 overflow-y-auto">
-        <div className="border-b-2 border-green-500 bg-white sticky top-0 flex justify-between z-10">
+        <div
+          className={`border-b-2 border-green-500 bg-white sticky top-0 flex justify-between z-10 ${
+            !lightMode && "bg-inherit text-white"
+          }`}
+        >
           <p className="flex items-center">
             <span className="text-green-500">
               <AiOutlineFileDone size={25} />

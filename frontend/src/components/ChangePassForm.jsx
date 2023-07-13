@@ -41,7 +41,7 @@ export default function ChangePassForm({ setShowChangePass }) {
         <input
           type="text"
           name="oldPass"
-          placeholder="Old password..."
+          placeholder="Current password..."
           required
           className="border rounded-md text-sm px-2 py-1 outline-none shadow-sm focus:shadow-md"
         />

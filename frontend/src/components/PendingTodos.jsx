@@ -12,7 +12,8 @@ import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 
 export default function PendingTodos({ searchWord }) {
-  const { togglePending, todos, updateTodo, getTodos } = useZustandStore();
+  const { togglePending, todos, updateTodo, getTodos, lightMode } =
+    useZustandStore();
   const [cookies, setCookies] = useCookies(["access_token"]);
   const pendingTodos = todos.filter((todo) => todo.pending === true);
   const pendingIds = pendingTodos.map((todo) => todo._id);
@@ -73,9 +74,13 @@ export default function PendingTodos({ searchWord }) {
   return (
     <>
       <div className="flex flex-col gap-5 pb-5 overflow-y-auto">
-        <div className="border-b-2 border-slate-500 bg-white sticky top-0 flex justify-between z-10">
+        <div
+          className={`border-b-2 border-slate-500 bg-white sticky top-0 flex justify-between z-10 ${
+            !lightMode && "bg-inherit text-white"
+          }`}
+        >
           <p className="flex items-center">
-            <span className="text-slate-500">
+            <span className={`${lightMode ? "text-slate-500" : "text-white"}`}>
               <AiOutlineHourglass size={25} />
             </span>
             Pending ({pendingTodos.length})
