@@ -80,6 +80,26 @@ router.get("/user", verifyToken, async (req, res) => {
   }
 });
 
+// PUT profile image
+router.put("/profileimage", async (req, res) => {
+  const { imageURL, userID } = req.body;
+
+  try {
+    const user = await UserModel.findById(userID);
+    if (!user) return res.status(404).json({ message: "User not found!" });
+
+    const updatedUserAvatar = await UserModel.findByIdAndUpdate(
+      userID,
+      { avatar: imageURL },
+      { new: true }
+    );
+    res.status(200).json({ updatedUserAvatar });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 // PUT change user password
 router.put("/changepassword", async (req, res) => {
   const { oldPass, newPass, userID } = req.body;

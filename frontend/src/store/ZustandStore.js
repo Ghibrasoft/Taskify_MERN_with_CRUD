@@ -21,6 +21,7 @@ const useZustandStore = create((set) => ({
         headers: { Authorization: cookies.access_token },
       });
       set({ currUser: res.data });
+      return res;
     } catch (error) {
       console.error(error);
     }
@@ -53,6 +54,18 @@ const useZustandStore = create((set) => ({
       throw error; // re-throw the error
     }
   },
+  updateProfileImg: async (imageURL, userID) => {
+    try {
+      const res = await axios.put("http://localhost:3001/auth/profileimage", {
+        imageURL,
+        userID,
+      });
+      return res;
+    } catch (error) {
+      console.error(error);
+      throw error; // re-throw the error
+    }
+  },
   changePassword: async (credentials) => {
     const { oldPass, newPass, userID } = credentials;
     try {
@@ -63,7 +76,8 @@ const useZustandStore = create((set) => ({
       });
       return res;
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+      throw error;
     }
   },
   deleteUserAccount: async (userId) => {

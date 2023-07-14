@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import useZustandStore from "../store/ZustandStore";
 import ChangePassForm from "../components/ChangePassForm";
 import DelAccountConfModal from "../components/DelAccountConfModal";
@@ -10,28 +9,15 @@ import {
   AiOutlineLock,
   AiOutlineUnorderedList,
   AiOutlineUserDelete,
-  AiFillPlusCircle,
 } from "react-icons/ai";
 import icon from "../assets/avatar.jpeg";
+import ImgUploader from "../components/ImgUploader";
 
 export default function UserProfile() {
-  const inputFileRef = useRef(null);
-  const [selectedImage, setSelectedImage] = useState(null);
   const [accountDelModal, setAccountDelModal] = useState(false);
   const [showChangePass, setShowChangePass] = useState(false);
-  const [cookies, _] = useCookies(["access_token"]);
-  const { currUser, getCurrUser, lightMode } = useZustandStore();
+  const { currUser, updateProfileImg, lightMode } = useZustandStore();
   const { avatar, username, email, userTodos } = currUser;
-
-  // custom input (file) func
-  function handleFileInput() {
-    const target = inputFileRef.current;
-    if (target) target.click();
-  }
-
-  useEffect(() => {
-    getCurrUser(cookies);
-  }, [getCurrUser, cookies]);
 
   return (
     <>
@@ -45,24 +31,10 @@ export default function UserProfile() {
                 <img
                   src={`${avatar ? `${avatar}` : `${icon}`}`}
                   alt="avatar"
-                  className="w-32 h-32 rounded-lg"
+                  className="w-40 h-40 rounded-lg object-cover"
                 />
                 {/* custom input (file) */}
-                <div className="absolute bg-white rounded-full bottom-0 right-0 translate-x-4 translate-y-4">
-                  <input
-                    type="file"
-                    name="avatar"
-                    ref={inputFileRef}
-                    className="absolute inset-0 opacity-0 -z-10"
-                  />
-                  <label
-                    htmlFor="avatar"
-                    onClick={handleFileInput}
-                    className="cursor-pointer text-yellow-400"
-                  >
-                    <AiFillPlusCircle size={40} />
-                  </label>
-                </div>
+                <ImgUploader updateProfileImg={updateProfileImg} />
               </div>
             </div>
             {/* username */}

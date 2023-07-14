@@ -31,7 +31,13 @@ export default function ChangePassForm({ setShowChangePass }) {
       setCookies("access_token", res.data.newToken);
       setShowChangePass(false);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
+
+      if (error.response && error.response.status === 401) {
+        toast.error("Invalid current password!");
+      } else {
+        toast.error("Password changing failed due to an internal server error");
+      }
     }
   }
 

@@ -7,14 +7,16 @@ import {
   MdMenu,
   MdClose,
   MdHome,
-  MdAccountBox,
   MdLogout,
 } from "react-icons/md";
+import icon from "../assets/avatar.jpeg";
+import useZustandStore from "../store/ZustandStore";
 
 export default function Navbar({ lightMode, setLightMode }) {
   const navigate = useNavigate();
   const [openNav, setOpenNav] = useState(false);
   const [cookies, setCookies] = useCookies(["access_token"]);
+  const { currUser } = useZustandStore();
 
   function handleLogout() {
     setCookies("access_token", "");
@@ -25,10 +27,6 @@ export default function Navbar({ lightMode, setLightMode }) {
 
   return (
     <nav className="h-full flex justify-between items-center">
-      <div className="">
-        <img src="" alt="" />
-      </div>
-
       {/* navigation tabs */}
       <div className="h-full hidden sm:flex items-cente ms-auto">
         {cookies.access_token && (
@@ -52,9 +50,16 @@ export default function Navbar({ lightMode, setLightMode }) {
                 "bg-blue-500 text-white"
               }`}
             >
-              <span className="mr-1">
-                <MdAccountBox size={25} />
-              </span>
+              {cookies.access_token && (
+                <span className="mr-1">
+                  <img
+                    src={currUser.avatar ? currUser.avatar : icon}
+                    alt="user-avatar"
+                    className="w-7 h-7 rounded-full object-cover cursor-pointer"
+                    onClick={() => navigate("/mainpage")}
+                  />
+                </span>
+              )}
               <p>Profile</p>
             </Link>
             <button
