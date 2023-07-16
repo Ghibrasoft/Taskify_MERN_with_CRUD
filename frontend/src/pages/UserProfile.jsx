@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useZustandStore from "../store/ZustandStore";
 import ChangePassForm from "../components/ChangePassForm";
@@ -12,12 +12,20 @@ import {
 } from "react-icons/ai";
 import icon from "../assets/avatar.jpeg";
 import ImgUploader from "../components/ImgUploader";
+import { useCookies } from "react-cookie";
 
 export default function UserProfile() {
   const [accountDelModal, setAccountDelModal] = useState(false);
   const [showChangePass, setShowChangePass] = useState(false);
-  const { currUser, updateProfileImg, lightMode } = useZustandStore();
+  const { currUser, getCurrUser, updateProfileImg, lightMode } =
+    useZustandStore();
   const { avatar, username, email, userTodos } = currUser;
+  const [cookies, _] = useCookies(["access_token"]);
+
+  useEffect(() => {
+    console.log("start");
+    getCurrUser(cookies);
+  }, [getCurrUser, cookies]);
 
   return (
     <>

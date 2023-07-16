@@ -31,25 +31,6 @@ export default function DelConfModal({
     todos,
   ]);
 
-  const handleDeleteMany = useCallback(async () => {
-    try {
-      await deleteTodo(checkedTodo, todos);
-      setOpenModal(false);
-      setOpenMultiSelect(false);
-      setCheckedTodo([]);
-      toast.error("Task list deleted!");
-    } catch (error) {
-      console.error(error);
-    }
-  }, [
-    checkedTodo,
-    deleteTodo,
-    setCheckedTodo,
-    setOpenModal,
-    setOpenMultiSelect,
-    todos,
-  ]);
-
   return (
     // backdrop
     <div
@@ -76,7 +57,7 @@ export default function DelConfModal({
           {/* buttons */}
           <div className="flex gap-1 mt-5">
             <button
-              onClick={checkedTodo.length > 1 ? handleDeleteMany : handleDelete}
+              onClick={handleDelete}
               className="bg-red-500 text-white rounded-xl px-5 py-2 hover:bg-red-700 transition-colors"
             >
               Delete
