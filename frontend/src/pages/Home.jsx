@@ -14,7 +14,7 @@ export default function Home() {
           to={`${cookies.access_token ? "/mainpage" : "/login"}`}
           className="w-fit flex items-center justify-center ring-1 ring-blue-500 pl-5 pr-2 py-2 rounded-full hover:text-blue-500 active:bg-blue-100 active:ring-offset-2 group transition-all"
         >
-          <p>Get started</p>
+          {cookies.access_token ? <p>Go to Main Page</p> : <p>Get started</p>}
           <span className="opacity-0 -translate-x-1 text-blue-500 group-hover:opacity-100 group-hover:translate-x-[2px] transition-all">
             <AiOutlineArrowRight size={20} />
           </span>
