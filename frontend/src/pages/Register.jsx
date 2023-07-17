@@ -17,10 +17,16 @@ export default function Register() {
     const newUser = Object.fromEntries(registerFormData);
 
     try {
-      const res = await registerUser(newUser);
-      registerFormRef.current.reset();
+      const res = await toast.promise(registerUser(newUser), {
+        pending: "Registering...",
+        success: "Register success!",
+        error: "Registration failed",
+      });
 
-      if (res.status === 200) navigate("/login");
+      if (res.status === 200) {
+        navigate("/login");
+        registerFormRef.current.reset();
+      }
 
       // console.log("Register success!");
     } catch (error) {

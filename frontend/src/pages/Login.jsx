@@ -19,7 +19,11 @@ export default function Login() {
     const loginUserData = Object.fromEntries(loginFormData);
 
     try {
-      const res = await loginUser(loginUserData);
+      const res = await toast.promise(loginUser(loginUserData), {
+        pending: "Logging in...",
+        success: "Login success!",
+        error: "Login failed",
+      });
 
       setCookies("access_token", res.data.token);
       window.localStorage.setItem("userID", res.data.userID);

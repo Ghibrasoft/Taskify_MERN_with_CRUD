@@ -31,6 +31,7 @@ function App() {
               <Route path={"/profile"} element={<UserProfile />} />
             </>
           )}
+
           {/* catch all routes */}
           <Route path={"*"} element={<Home />} />
         </Routes>
