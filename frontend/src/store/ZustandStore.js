@@ -17,9 +17,12 @@ const useZustandStore = create((set) => ({
   currUser: {},
   getCurrUser: async (cookies) => {
     try {
-      const res = await axios.get("http://localhost:3001/auth/user", {
-        headers: { Authorization: cookies.access_token },
-      });
+      const res = await axios.get(
+        "https://taskify-app.onrender.com/auth/user",
+        {
+          headers: { Authorization: cookies.access_token },
+        }
+      );
       set({ currUser: res.data });
       return res;
     } catch (error) {
@@ -29,11 +32,14 @@ const useZustandStore = create((set) => ({
   registerUser: async (newUser) => {
     try {
       const { username, email, password } = newUser;
-      const res = await axios.post("http://localhost:3001/auth/register", {
-        username,
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://taskify-app.onrender.com/auth/register",
+        {
+          username,
+          email,
+          password,
+        }
+      );
 
       return res;
     } catch (error) {
@@ -44,10 +50,13 @@ const useZustandStore = create((set) => ({
   loginUser: async (loginUser) => {
     try {
       const { username, password } = loginUser;
-      const res = await axios.post("http://localhost:3001/auth/login", {
-        username,
-        password,
-      });
+      const res = await axios.post(
+        "https://taskify-app.onrender.com/auth/login",
+        {
+          username,
+          password,
+        }
+      );
       return res;
     } catch (error) {
       // console.error(error);
@@ -56,10 +65,13 @@ const useZustandStore = create((set) => ({
   },
   updateProfileImg: async (imageURL, userID) => {
     try {
-      const res = await axios.put("http://localhost:3001/auth/profileimage", {
-        imageURL,
-        userID,
-      });
+      const res = await axios.put(
+        "https://taskify-app.onrender.com/auth/profileimage",
+        {
+          imageURL,
+          userID,
+        }
+      );
       return res;
     } catch (error) {
       console.error(error);
@@ -69,11 +81,14 @@ const useZustandStore = create((set) => ({
   changePassword: async (credentials) => {
     const { oldPass, newPass, userID } = credentials;
     try {
-      const res = await axios.put("http://localhost:3001/auth/changepassword", {
-        oldPass,
-        newPass,
-        userID,
-      });
+      const res = await axios.put(
+        "https://taskify-app.onrender.com/auth/changepassword",
+        {
+          oldPass,
+          newPass,
+          userID,
+        }
+      );
       return res;
     } catch (error) {
       // console.error(error);
@@ -82,7 +97,7 @@ const useZustandStore = create((set) => ({
   },
   deleteUserAccount: async (userId) => {
     try {
-      await axios.delete(`http://localhost:3001/auth/${userId}`);
+      await axios.delete(`https://taskify-app.onrender.com/auth/${userId}`);
     } catch (error) {
       console.error(error);
     }
@@ -93,7 +108,7 @@ const useZustandStore = create((set) => ({
   getTodos: async (userOwner, cookies, setCookies) => {
     try {
       const res = await axios.get(
-        `http://localhost:3001/todos?userOwner=${userOwner}`,
+        `https://taskify-app.onrender.com/todos?userOwner=${userOwner}`,
         { headers: { Authorization: cookies.access_token } }
       );
       set({ todos: res.data });
@@ -109,7 +124,10 @@ const useZustandStore = create((set) => ({
   },
   addTodo: async (todo, userOwner, cookies) => {
     try {
-      await axios.post("http://localhost:3001/todos", { todo, userOwner });
+      await axios.post("https://taskify-app.onrender.com/todos", {
+        todo,
+        userOwner,
+      });
       useZustandStore.getState().getTodos(userOwner, cookies);
     } catch (error) {
       console.error(error);
@@ -117,9 +135,12 @@ const useZustandStore = create((set) => ({
   },
   updateTodo: async (id, todos, editedTodo) => {
     try {
-      const res = await axios.put(`http://localhost:3001/todos/${id}`, {
-        editedTodo,
-      });
+      const res = await axios.put(
+        `https://taskify-app.onrender.com/todos/${id}`,
+        {
+          editedTodo,
+        }
+      );
 
       // create new object if ID matches , if not return old
       const updatedTodo = todos.map((todo) =>
@@ -134,7 +155,7 @@ const useZustandStore = create((set) => ({
   togglePending: async (id, pending) => {
     try {
       await axios.put(
-        `http://localhost:3001/todos/${id}/${
+        `https://taskify-app.onrender.com/todos/${id}/${
           pending ? "inprogress" : "pending"
         }`
       );
@@ -151,7 +172,7 @@ const useZustandStore = create((set) => ({
   toggleDone: async (id, done) => {
     try {
       await axios.put(
-        `http://localhost:3001/todos/${id}/${done ? "undo" : "done"}`
+        `https://taskify-app.onrender.com/todos/${id}/${done ? "undo" : "done"}`
       );
 
       set((state) => ({
@@ -165,7 +186,9 @@ const useZustandStore = create((set) => ({
   },
   deleteTodo: async (ids, todoList) => {
     try {
-      await axios.delete("http://localhost:3001/todos", { data: { ids } });
+      await axios.delete("https://taskify-app.onrender.com/todos", {
+        data: { ids },
+      });
 
       const filteredTodos = todoList.filter((todo) => !ids.includes(todo._id));
       set({ todos: filteredTodos });

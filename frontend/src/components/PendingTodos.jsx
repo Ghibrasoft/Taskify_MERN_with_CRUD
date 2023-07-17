@@ -50,7 +50,7 @@ export default function PendingTodos({ searchWord }) {
           });
       }
     },
-    [editedTodo, getTodos, updateTodo, todos]
+    [editedTodo, getTodos, updateTodo, todos, cookies, setCookies]
   );
 
   // delete single task, opens modal
