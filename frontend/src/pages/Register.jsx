@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import useZustandStore from "../store/ZustandStore";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export default function Register() {
   const { registerUser, lightMode } = useZustandStore();
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const registerFormRef = useRef(null);
@@ -48,7 +50,7 @@ export default function Register() {
             !lightMode && "text-white"
           }`}
         >
-          Create an account
+          {t("register.title")}
         </h1>
         <form
           ref={registerFormRef}
@@ -58,14 +60,14 @@ export default function Register() {
           <input
             type="text"
             name="username"
-            placeholder="Username..."
+            placeholder={t("register.username")}
             required
             className="px-4 py-2 rounded-md shadow outline-none"
           />
           <input
             type="email"
             name="email"
-            placeholder="Email..."
+            placeholder={t("register.email")}
             required
             className="px-4 py-2 rounded-md shadow outline-none"
           />
@@ -73,7 +75,7 @@ export default function Register() {
             <input
               type={`${showPassword ? "text" : "password"}`}
               name="password"
-              placeholder="Password..."
+              placeholder={t("register.password")}
               required
               className="w-full px-4 py-2 rounded-md shadow outline-none"
             />
@@ -92,16 +94,16 @@ export default function Register() {
             type="submit"
             className="py-2 rounded-md text-white ring-2 ring-blue-500 hover:ring-offset-2 hover:ring-blue-700 active:ring-offset-1 bg-blue-500 hover:bg-blue-700 transition-all"
           >
-            Register
+            {t("register.submitBtn")}
           </button>
         </form>
 
         <div className="flex items-center gap-1">
           <span className={`${!lightMode && "text-white"}`}>
-            Already have an account?
+            {t("register.alreadyHave")}
           </span>
           <Link to={"/login"} className="text-blue-500 hover:underline">
-            Log in
+            {t("login")}
           </Link>
         </div>
       </div>

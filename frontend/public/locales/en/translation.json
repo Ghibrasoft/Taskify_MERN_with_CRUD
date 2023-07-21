@@ -31,7 +31,7 @@
   "register.title": "Create an account",
   "register.username": "Username...",
   "register.email": "Email...",
-  "register.Password": "Password...",
+  "register.password": "Password...",
   "register.submitBtn": "Register",
   "register.alreadyHave": "Already have an account?",
 

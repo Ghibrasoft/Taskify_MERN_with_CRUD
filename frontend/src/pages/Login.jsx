@@ -4,11 +4,13 @@ import useZustandStore from "../store/ZustandStore";
 import { useCookies } from "react-cookie";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const { loginUser, lightMode } = useZustandStore();
   const [showPassword, setShowPassword] = useState(false);
   const [_, setCookies] = useCookies(["access_token"]);
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const loginFormRef = useRef(null);
 
@@ -53,7 +55,7 @@ export default function Login() {
             !lightMode && "text-white"
           }`}
         >
-          Log in
+          {t("login.title")}
         </h1>
         <form
           ref={loginFormRef}
@@ -63,7 +65,7 @@ export default function Login() {
           <input
             type="text"
             name="username"
-            placeholder="Username or Email..."
+            placeholder={t("login.usernameEmail")}
             required
             className="px-4 py-2 rounded-md shadow outline-none"
           />
@@ -71,7 +73,7 @@ export default function Login() {
             <input
               type={`${showPassword ? "text" : "password"}`}
               name="password"
-              placeholder="Password..."
+              placeholder={t("login.password")}
               required
               className="w-full px-4 py-2 rounded-md shadow outline-none"
             />
@@ -90,16 +92,16 @@ export default function Login() {
             type="submit"
             className="py-2 rounded-md text-white ring-2 ring-blue-500 hover:ring-offset-2 hover:ring-blue-700 active:ring-offset-1 bg-blue-500 hover:bg-blue-700 transition-all"
           >
-            Log in
+            {t("login.submitBtn")}
           </button>
         </form>
 
         <div className="flex items-center gap-1">
           <span className={`${!lightMode && "text-white"}`}>
-            Not have an account?
+            {t("login.notHave")}
           </span>
           <Link to={"/register"} className="text-blue-500 hover:underline">
-            Register
+            {t("register")}
           </Link>
         </div>
       </div>
