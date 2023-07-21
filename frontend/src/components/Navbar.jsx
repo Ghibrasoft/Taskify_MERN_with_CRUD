@@ -11,12 +11,21 @@ import {
 } from "react-icons/md";
 import icon from "../assets/avatar.jpeg";
 import useZustandStore from "../store/ZustandStore";
+import { useTranslation } from "react-i18next";
 
 export default function Navbar({ lightMode, setLightMode }) {
   const navigate = useNavigate();
   const [openNav, setOpenNav] = useState(false);
   const [cookies, setCookies] = useCookies(["access_token"]);
-  const { currUser } = useZustandStore();
+  const { currUser, language, setLanguage } = useZustandStore();
+  const { t, i18n } = useTranslation();
+
+  const handleLanguageChange = (e) => {
+    const selectedLanguage = e.target.value;
+    setLanguage(selectedLanguage);
+
+    i18n.changeLanguage(selectedLanguage);
+  };
 
   function handleLogout() {
     setCookies("access_token", "");
@@ -41,7 +50,7 @@ export default function Navbar({ lightMode, setLightMode }) {
               <span className="mr-1">
                 <MdHome size={25} />
               </span>
-              <p>Main page</p>
+              <p>{t("navbar.home")}</p>
             </Link>
             <Link
               to={"/profile"}
@@ -60,20 +69,39 @@ export default function Navbar({ lightMode, setLightMode }) {
                   />
                 </span>
               )}
-              <p>Profile</p>
+              <p>{t("navbar.profile")}</p>
             </Link>
             <button
               onClick={handleLogout}
-              className="h-full flex items-center hover:bg-blue-500 px-7 hover:text-white transition-colors"
+              className="h-full flex items-center hover:bg-red-500 px-7 hover:text-white transition-colors"
             >
               <span className="mr-1">
                 <MdLogout size={25} />
               </span>
-              <p>Log out</p>
+              <p>{t("navbar.logout")}</p>
             </button>
           </>
         )}
       </div>
+
+      {/* choose language */}
+      {cookies.access_token && (
+        <div className="h-full">
+          <select
+            id="language-select"
+            value={language}
+            onChange={handleLanguageChange}
+            className="w-full h-full block py-2 px-3 cursor-pointer bg-inherit outline-none hover:bg-blue-500 hover:text-white focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          >
+            <option value="GE" className="bg-white text-black">
+              GE
+            </option>
+            <option value="EN" className="bg-white text-black">
+              EN
+            </option>
+          </select>
+        </div>
+      )}
 
       {/* light/night mode */}
       <div className="h-full flex items-center me-auto sm:m-0">
@@ -112,9 +140,9 @@ export default function Navbar({ lightMode, setLightMode }) {
           onClick={() => setOpenNav(false)}
           className="relative py-5 text-3xl hover:text-blue-500 transitio-all"
         >
-          Main
+          {t("navbar.home")}
           <span className="w-full h-full absolute -top-0 left-0 flex items-center justify-center text-[4rem] text-slate-500/30 opacity-0 hover:opacity-100 tracking-[3rem] hover:tracking-widest transition-all duration-200">
-            Main
+            {t("navbar.home")}
           </span>
         </Link>
         <Link
@@ -122,9 +150,9 @@ export default function Navbar({ lightMode, setLightMode }) {
           onClick={() => setOpenNav(false)}
           className="relative py-5 text-3xl hover:text-blue-500 transitio-all"
         >
-          Profile
+          {t("navbar.profile")}
           <span className="w-full h-full absolute -top-0 left-0 flex items-center justify-center text-[4rem] text-slate-500/30 opacity-0 hover:opacity-100 tracking-[3rem] hover:tracking-widest transition-all duration-200">
-            Profile
+            {t("navbar.profile")}
           </span>
         </Link>
         <button
@@ -132,9 +160,9 @@ export default function Navbar({ lightMode, setLightMode }) {
           onClick={handleLogout}
           className="relative py-5 text-3xl hover:text-blue-500 transitio-all"
         >
-          Log out
+          {t("navbar.logout")}
           <span className="w-full h-full absolute -top-0 left-0 flex items-center justify-center text-[4rem] text-slate-500/30 opacity-0 hover:opacity-100 tracking-[3rem] hover:tracking-widest transition-all duration-200">
-            Logout
+            {t("navbar.logout")}
           </span>
         </button>
       </div>

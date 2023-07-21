@@ -10,11 +10,13 @@ import {
 import DelConfModal from "./DelConfModal";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
 
 export default function PendingTodos({ searchWord }) {
   const { togglePending, todos, updateTodo, getTodos, lightMode } =
     useZustandStore();
   const [cookies, setCookies] = useCookies(["access_token"]);
+  const { t } = useTranslation();
   const pendingTodos = todos.filter((todo) => todo.pending === true);
   const pendingIds = pendingTodos.map((todo) => todo._id);
 
@@ -83,7 +85,7 @@ export default function PendingTodos({ searchWord }) {
             <span className={`${lightMode ? "text-slate-500" : "text-white"}`}>
               <AiOutlineHourglass size={25} />
             </span>
-            Pending ({pendingTodos.length})
+            {t("todoList.pending")} ({pendingTodos.length})
           </p>
 
           {/* multi select */}
@@ -96,10 +98,10 @@ export default function PendingTodos({ searchWord }) {
                     disabled={disableBtn}
                     onClick={() => setOpenModal(true)}
                     className={`text-[10px] px-3 rounded-md text-white ${
-                      disableBtn ? "bg-gray-300" : "bg-red-500"
+                      disableBtn ? "bg-gray-300" : "bg-red-500 hover:bg-red-700"
                     }`}
                   >
-                    Delete
+                    {t("todoList.btnDelete")}
                   </button>
                   <button
                     type="button"
@@ -107,9 +109,9 @@ export default function PendingTodos({ searchWord }) {
                       setOpenMultiSelect(false);
                       setCheckedTodo([]);
                     }}
-                    className="text-[10px] px-3 rounded-md bg-gray-500 text-white"
+                    className="text-[10px] px-3 rounded-md bg-gray-500 text-white hover:bg-gray-700"
                   >
-                    Close
+                    {t("todoList.btnCancel")}
                   </button>
                 </>
               ) : (
@@ -122,14 +124,14 @@ export default function PendingTodos({ searchWord }) {
                     }}
                     className="text-[10px] px-3 rounded-md bg-blue-500 text-white"
                   >
-                    Select all
+                    {t("todoList.btnSelectAll")}
                   </button>
                   <button
                     type="button"
                     onClick={() => setOpenMultiSelect(true)}
                     className="text-[10px] px-3 rounded-md bg-blue-500 text-white"
                   >
-                    Select many
+                    {t("todoList.btnSelectMany")}
                   </button>
                 </>
               )}

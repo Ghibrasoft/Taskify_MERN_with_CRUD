@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { toast } from "react-toastify";
 import useZustandStore from "../store/ZustandStore";
+import { useTranslation } from "react-i18next";
 
 export default function DelConfModal({
   openModal,
@@ -11,6 +12,7 @@ export default function DelConfModal({
   setOpenMultiSelect,
 }) {
   const { todos, deleteTodo } = useZustandStore();
+  const { t } = useTranslation();
 
   const handleDelete = useCallback(async () => {
     try {
@@ -49,9 +51,9 @@ export default function DelConfModal({
         {/* modal body */}
         <div className="flex flex-col items-center">
           <AiOutlineDelete size={45} color="red" />
-          <h1 className="text-2xl font-bold">Confirm delete</h1>
+          <h1 className="text-2xl font-bold">{t("modalDel.title")}</h1>
           <p className="text-sm text-gray-500 whitespace-normal">
-            Are you sure you want delete this task?
+            {t("modalDelTodo.msg")}
           </p>
 
           {/* buttons */}
@@ -60,13 +62,13 @@ export default function DelConfModal({
               onClick={handleDelete}
               className="bg-red-500 text-white rounded-xl px-5 py-2 hover:bg-red-700 transition-colors"
             >
-              Delete
+              {t("modalDelBtn")}
             </button>
             <button
               onClick={() => setOpenModal(false)}
               className="bg-gray-500 text-white rounded-xl px-5 py-2 hover:bg-gray-700 transition-colors"
             >
-              Cancel
+              {t("modalCancelBtn")}
             </button>
           </div>
         </div>

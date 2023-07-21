@@ -2,11 +2,13 @@ import React, { useRef } from "react";
 import { toast } from "react-toastify";
 import useZustandStore from "../store/ZustandStore";
 import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
 
 export default function ChangePassForm({ setShowChangePass }) {
   const formRef = useRef(null);
   const [_, setCookies] = useCookies(["access_token"]);
   const { changePassword } = useZustandStore();
+  const { t } = useTranslation();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -47,14 +49,14 @@ export default function ChangePassForm({ setShowChangePass }) {
         <input
           type="text"
           name="oldPass"
-          placeholder="Current password..."
+          placeholder={t("profile.currPass")}
           required
           className="border rounded-md text-sm px-2 py-1 outline-none shadow-sm focus:shadow-md"
         />
         <input
           type="text"
           name="newPass"
-          placeholder="New password..."
+          placeholder={t("profile.newPass")}
           required
           className="border rounded-md text-sm px-2 py-1 outline-none shadow-sm focus:shadow-md"
         />
@@ -64,14 +66,14 @@ export default function ChangePassForm({ setShowChangePass }) {
           type="submit"
           className="w-full bg-blue-500 text-white text-sm px-2 py-1 rounded-md hover:bg-blue-700 transition-colors"
         >
-          Save
+          {t("profile.saveBtn")}
         </button>
         <button
           type="button"
           onClick={() => setShowChangePass(false)}
           className="w-full bg-gray-500 text-white text-sm px-2 py-1 rounded-md hover:bg-gray-700 transition-colors"
         >
-          Cancel
+          {t("profile.cancelBtn")}
         </button>
       </div>
     </form>

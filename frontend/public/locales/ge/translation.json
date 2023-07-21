@@ -1,0 +1,58 @@
+{
+  "navbar.home": "მთავარი გვერდი",
+  "navbar.profile": "პროფილი",
+  "navbar.logout": "გასვლა",
+
+  "profile.username": "სახელი",
+  "profile.email": "მეილი",
+  "profile.password": "პაროლი",
+  "profile.totalTasks": "ყველა დავალება",
+  "profile.changePassBtn": "შეცვლა",
+  "profile.currPass": "მოქმედი პაროლი",
+  "profile.newPass": "ახალი პაროლი",
+  "profile.saveBtn": "შენახვა",
+  "profile.cancelBtn": "გაუქმება",
+  "profile.show": "ჩვენება",
+  "profile.delete": "ანგარიშის წაშლა",
+
+  "home.welcome": "მოგესალმებით",
+  "home.welcomeMsg": "მართეთ საკუთარი ამოცანები",
+  "home.getStarted": "დაწყება",
+  "home.goToMain": "მთავარ გვერდზე გადასვლა",
+
+  "login.title": "შესვლა",
+  "login.usernameEmail": "სახელი ან მეილი...",
+  "login.password": "პაროლი...",
+  "login.submitBtn": "შესვლა",
+  "login.notHave": "არ გაქვთ ანგარიში?",
+
+  "register": "Register",
+  "register.title": "Create an account",
+  "register.username": "Username...",
+  "register.email": "Email...",
+  "register.Password": "Password...",
+  "register.submitBtn": "Register",
+  "register.alreadyHave": "Already have an account?",
+
+  "addTodo.title": "Taskify",
+  "addTodo.mainInput": "ახალი დავალება...",
+  "addTodo.addBtn": "დამატება",
+  "addTodo.search": "დავალების პოვნა...",
+
+  "todoList.pending": "მომლოდინე",
+  "todoList.inProgress": "მიმდინარე",
+  "todoList.done": "შესრულებული",
+  "todoList.btnSelectAll": "ყველას მონიშვნა",
+  "todoList.btnSelectMany": "ბევრის მონიშვნა",
+  "todoList.btnDelete": "წაშლა",
+  "todoList.btnCancel": "გაუქმება",
+
+  "modalDelTodo.msg": "დარწმუნებული ხართ, რომ გსურთ წაშალოთ ეს დავალება?",
+
+  "modalAccount.msg1": "დარწმუნებული ხართ, რომ გსურთ წაიშალოს თქვენი ანგარიში?",
+  "modalAccount.msg2": "აღდგენა შეუძლებელია",
+
+  "modalDel.title": "წაშლის დადასტურება",
+  "modalDelBtn": "წაშლა",
+  "modalCancelBtn": "გაუქმება"
+}

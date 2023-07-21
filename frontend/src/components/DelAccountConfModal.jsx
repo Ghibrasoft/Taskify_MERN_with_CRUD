@@ -3,6 +3,7 @@ import { AiOutlineUserDelete } from "react-icons/ai";
 import useZustandStore from "../store/ZustandStore";
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export default function DelAccountConfModal({
   accountDelModal,
@@ -10,6 +11,7 @@ export default function DelAccountConfModal({
 }) {
   const [_, setCookies] = useCookies(["access_token"]);
   const { deleteUserAccount } = useZustandStore();
+  const { t } = useTranslation();
 
   function handleDeleteProfile() {
     const userID = window.localStorage.getItem("userID");
@@ -47,10 +49,10 @@ export default function DelAccountConfModal({
         {/* modal body */}
         <div className="flex flex-col items-center">
           <AiOutlineUserDelete size={45} color="red" />
-          <h1 className="text-2xl font-bold">Delete account</h1>
+          <h1 className="text-2xl font-bold">{t("modalDel.title")}</h1>
           <p className="flex flex-col items-center text-sm text-gray-500 whitespace-normal">
-            Are you sure you want delete your account?
-            <small className="text-red-500">(This cann't be undone)</small>
+            {t("modalAccount.msg1")}
+            <small className="text-red-500">({t("modalAccount.msg2")})</small>
           </p>
 
           {/* buttons */}
@@ -59,13 +61,13 @@ export default function DelAccountConfModal({
               onClick={handleDeleteProfile}
               className="bg-red-500 text-white rounded-xl px-5 py-2 hover:bg-red-700 transition-colors"
             >
-              Delete
+              {t("modalDelBtn")}
             </button>
             <button
               onClick={() => setAccountDelModal(false)}
               className="bg-gray-500 text-white rounded-xl px-5 py-2 hover:bg-gray-700 transition-colors"
             >
-              Cancel
+              {t("modalCancelBtn")}
             </button>
           </div>
         </div>

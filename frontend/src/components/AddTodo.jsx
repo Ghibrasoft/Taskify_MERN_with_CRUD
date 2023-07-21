@@ -3,12 +3,14 @@ import useZustandStore from "../store/ZustandStore";
 import { toast } from "react-toastify";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
 
 export default function AddTodo() {
   const inputRef = useRef(null);
   const [todo, setTodo] = useState("");
   const [cookies, _] = useCookies(["access_token"]);
   const { addTodo, lightMode } = useZustandStore();
+  const { t } = useTranslation();
 
   async function submitHandler(e) {
     e.preventDefault();
@@ -32,7 +34,7 @@ export default function AddTodo() {
           !lightMode && "title-h1 text-white"
         }`}
       >
-        Taskify
+        {t("addTodo.title")}
       </h1>
       <form onSubmit={submitHandler} className="md:w-2/5">
         <div className="my-5 flex w-full rounded-full shadow-lg">
@@ -40,7 +42,7 @@ export default function AddTodo() {
             ref={inputRef}
             type="text"
             name="todo"
-            placeholder="Add task..."
+            placeholder={t("addTodo.mainInput")}
             value={todo}
             onChange={() => setTodo(inputRef.current.value)}
             required
@@ -53,7 +55,7 @@ export default function AddTodo() {
             <span className="opacity-0 group-hover:opacity-100 transition-opacity">
               <AiOutlinePlusCircle size={25} />
             </span>
-            Add
+            {t("addTodo.addBtn")}
           </button>
         </div>
       </form>

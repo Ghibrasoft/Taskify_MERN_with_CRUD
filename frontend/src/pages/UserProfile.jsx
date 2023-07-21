@@ -13,6 +13,7 @@ import {
 import icon from "../assets/avatar.jpeg";
 import ImgUploader from "../components/ImgUploader";
 import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
 
 export default function UserProfile() {
   const [accountDelModal, setAccountDelModal] = useState(false);
@@ -21,6 +22,7 @@ export default function UserProfile() {
     useZustandStore();
   const { avatar, username, email, userTodos } = currUser;
   const [cookies, _] = useCookies(["access_token"]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     console.log("start");
@@ -51,7 +53,7 @@ export default function UserProfile() {
                 <span>
                   <AiOutlineUser size={15} />
                 </span>
-                Username:
+                {t("profile.username")}:
               </p>
               <h1 className={`text-xl font-bold ${!lightMode && "text-white"}`}>
                 {username}
@@ -63,7 +65,7 @@ export default function UserProfile() {
                 <span>
                   <AiOutlineMail size={15} />
                 </span>
-                Email:
+                {t("profile.email")}:
               </p>
               <h1 className={`text-xl font-bold ${!lightMode && "text-white"}`}>
                 {email}
@@ -78,13 +80,13 @@ export default function UserProfile() {
                       <span>
                         <AiOutlineLock size={15} />
                       </span>
-                      Password:
+                      {t("profile.password")}:
                     </p>
                     <button
                       onClick={() => setShowChangePass(true)}
                       className="text-blue-500 text-sm hover:underline transition-all"
                     >
-                      Change
+                      {t("profile.changePassBtn")}
                     </button>
                   </>
                 ) : (
@@ -98,13 +100,13 @@ export default function UserProfile() {
                 <span>
                   <AiOutlineUnorderedList size={15} />
                 </span>
-                Total tasks({userTodos && userTodos.length})
+                {t("profile.totalTasks")}({userTodos && userTodos.length})
               </p>
               <Link
                 to={"/mainpage"}
                 className="flex items-center text-blue-500 text-sm hover:underline"
               >
-                Show
+                {t("profile.show")}
               </Link>
             </div>
             {/* delete profile */}
@@ -112,7 +114,7 @@ export default function UserProfile() {
               onClick={() => setAccountDelModal(true)}
               className="flex items-center justify-center bg-red-500 ring-2 ring-red-500 text-white text-sm px-4 py-2 rounded-md hover:bg-red-700 hover:ring-red-700 hover:ring-offset-2 active:ring-offset-1 group transition-all"
             >
-              Delete account
+              {t("profile.delete")}
               <AiOutlineUserDelete
                 size={25}
                 className="opacity-0 -translate-x-2 group-hover:translate-x-0 group-hover:opacity-100 transition-all"

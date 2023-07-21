@@ -7,9 +7,11 @@ import {
   AiOutlineFileDone,
 } from "react-icons/ai";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export default function DoneTodos({ searchWord }) {
   const { toggleDone, todos, lightMode } = useZustandStore();
+  const { t } = useTranslation();
   const doneTodos = todos.filter((todo) => todo.done === true);
   const doneTodosIds = doneTodos.map((todo) => todo._id);
 
@@ -50,7 +52,7 @@ export default function DoneTodos({ searchWord }) {
             <span className="text-green-500">
               <AiOutlineFileDone size={25} />
             </span>
-            Done ({doneTodos.length})
+            {t("todoList.done")} ({doneTodos.length})
           </p>
 
           {/* multi select */}
@@ -66,7 +68,7 @@ export default function DoneTodos({ searchWord }) {
                       disableBtn ? "bg-gray-300" : "bg-red-500"
                     }`}
                   >
-                    Delete
+                    {t("todoList.btnDelete")}
                   </button>
                   <button
                     type="button"
@@ -76,7 +78,7 @@ export default function DoneTodos({ searchWord }) {
                     }}
                     className="text-[10px] px-3 rounded-md bg-gray-500 text-white"
                   >
-                    Close
+                    {t("todoList.btnCancel")}
                   </button>
                 </>
               ) : (
@@ -89,14 +91,14 @@ export default function DoneTodos({ searchWord }) {
                     }}
                     className="text-[10px] px-3 rounded-md bg-blue-500 text-white"
                   >
-                    Select all
+                    {t("todoList.btnSelectAll")}
                   </button>
                   <button
                     type="button"
                     onClick={() => setOpenMultiSelect(true)}
                     className="text-[10px] px-3 rounded-md bg-blue-500 text-white"
                   >
-                    Select many
+                    {t("todoList.btnSelectMany")}
                   </button>
                 </>
               )}

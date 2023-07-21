@@ -12,6 +12,10 @@ const useZustandStore = create((set) => ({
       };
     });
   },
+  language: window.localStorage.getItem("i18nextLng"),
+  setLanguage: (selectedLanguage) => {
+    set({ language: selectedLanguage });
+  },
 
   // register/login
   currUser: {},

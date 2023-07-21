@@ -1,0 +1,59 @@
+{
+  "navbar.home": "Home",
+  "navbar.profile": "Profile",
+  "navbar.logout": "Log out",
+
+  "profile.username": "Username",
+  "profile.email": "Email",
+  "profile.password": "Password",
+  "profile.totalTasks": "Total tasks",
+  "profile.changePassBtn": "Change",
+  "profile.currPass": "Current password...",
+  "profile.newPass": "New password...",
+  "profile.saveBtn": "Save",
+  "profile.cancelBtn": "Cancel",
+  "profile.show": "Show",
+  "profile.delete": "Delete account",
+
+  "home.welcome": "Welcome",
+  "home.welcomeMsg": "Manage your own tasks",
+  "home.getStarted": "Get started",
+  "home.goToMain": "Go to main page",
+
+  "login": "Log in",
+  "login.title": "Log in",
+  "login.usernameEmail": "Username or Email...",
+  "login.password": "Password...",
+  "login.submitBtn": "Log in",
+  "login.notHave": "Not have an account?",
+
+  "register": "Register",
+  "register.title": "Create an account",
+  "register.username": "Username...",
+  "register.email": "Email...",
+  "register.Password": "Password...",
+  "register.submitBtn": "Register",
+  "register.alreadyHave": "Already have an account?",
+
+  "addTodo.title": "Taskify",
+  "addTodo.mainInput": "Add task...",
+  "addTodo.addBtn": "Add",
+  "addTodo.search": "Find task...",
+
+  "todoList.pending": "Pending",
+  "todoList.inProgress": "In progress",
+  "todoList.done": "Done",
+  "todoList.btnSelectAll": "Select all",
+  "todoList.btnSelectMany": "Select many",
+  "todoList.btnDelete": "Delete",
+  "todoList.btnCancel": "Cancel",
+
+  "modalDelTodo.msg": "Are you sure you want delete this task?",
+
+  "modalAccount.msg1": "Are you sure you want delete your account?",
+  "modalAccount.msg2": "This cann't be undone",
+
+  "modalDel.title": "Confirm delete",
+  "modalDelBtn": "Delete",
+  "modalCancelBtn": "Cancel"
+}
